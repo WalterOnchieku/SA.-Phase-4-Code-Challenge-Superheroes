@@ -1,15 +1,21 @@
 from flask import Blueprint, jsonify, request
-from models import Hero, HeroPower, Power  # Ensure all models are imported
-from sqlalchemy.exc import IntegrityError  # Import IntegrityError for database-related errors
+from models import Hero, HeroPower, Power  
+from sqlalchemy.exc import IntegrityError 
 
 heroes_bp = Blueprint('heroes', __name__)
 
+#===========================================================================================
+
+#get all heroes
 @heroes_bp.route('/heroes', methods=['GET'])
 def get_heroes():
     heroes = Hero.query.all()
     heroes_data = [hero.to_dict() for hero in heroes]
     return jsonify(heroes_data), 200
 
+#===========================================================================================
+
+#check if hero exists using id
 @heroes_bp.route('/heroes/<int:id>', methods=['GET'])
 def get_hero_by_id(id):
     hero = Hero.query.get(id)
@@ -40,6 +46,9 @@ def get_hero_by_id(id):
     
     return jsonify(hero_data), 200
 
+#===========================================================================================
+
+#get all powers
 @heroes_bp.route('/powers', methods=['GET'])
 def get_powers():
     powers = Power.query.all()
@@ -59,6 +68,8 @@ def get_power_by_id(id):
     }
     
     return jsonify(power_data), 200
+
+#===========================================================================================
 
 @heroes_bp.route('/powers/<int:id>', methods=['PATCH'])
 def update_power(id):
@@ -88,6 +99,8 @@ def update_power(id):
     except ValueError as e:
         # Catch validation errors raised in the model
         return jsonify({"errors": [str(e)]}), 422
+
+#===========================================================================================
 
 # New route for creating a new HeroPower
 @heroes_bp.route('/hero_powers', methods=['POST'])
@@ -137,3 +150,5 @@ def create_hero_power():
     except IntegrityError:
         db.session.rollback()  # Rollback if there is an integrity error
         return jsonify({"errors": ["validation errors"]}), 422
+
+#===========================================================================================

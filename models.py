@@ -2,6 +2,8 @@
 from app import db  # Import db from app.py
 from sqlalchemy_serializer import SerializerMixin
 
+#===========================================================================================
+
 class Hero(db.Model, SerializerMixin):
     __tablename__ = 'heroes'
 
@@ -25,6 +27,8 @@ class Hero(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"<Hero {self.name}>"
+
+#===========================================================================================
 
 class Power(db.Model, SerializerMixin):
     __tablename__ = 'powers'
@@ -50,6 +54,8 @@ class Power(db.Model, SerializerMixin):
         if len(value) < 20:
             raise ValueError("Description must be at least 20 characters long.")
         return value
+
+#===========================================================================================
 
 class HeroPower(db.Model, SerializerMixin):
     __tablename__ = 'hero_powers'
@@ -78,3 +84,5 @@ class HeroPower(db.Model, SerializerMixin):
         if value not in self.VALID_STRENGTHS:
             raise ValueError(f"Invalid strength: {value}. Must be one of {', '.join(self.VALID_STRENGTHS)}.")
         return value
+        
+#===========================================================================================
